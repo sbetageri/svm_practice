@@ -1,9 +1,20 @@
 import pandas as pd
-import numpy as np
+from sklearn import svm
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
 
 dataframe = pd.read_csv('Skin_NonSkin.txt')
-print(dataframe.head(5))
 
-print('Labels')
 label = dataframe['S']
-print(label.head(5))
+
+features = dataframe[['B', 'G', 'R']]
+
+features_train, features_test, labels_train, labels_test = train_test_split(features, label, random_state=9)
+
+classifier = svm.SVC()
+
+classifier.fit(features_train, labels_train)
+
+pred = classifier.predict(features_test)
+
+print(accuracy_score(labels_test, pred))
